@@ -4,4 +4,5 @@ class Agent < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :lockable
+#  cattr_accessor :current_agent
 end
