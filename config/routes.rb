@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
   devise_for :agents
+
+  # static_pages
+  root 'static_pages#home'     
+      
+  get 'help' => 'static_pages#help'
+  get 'about' => 'static_pages#about' 
+  get 'contact' => 'static_pages#contact'
+  get 'apps' => 'static_pages#apps'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
