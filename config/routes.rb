@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :agents
+  resources :agents, :only => [:index, :show, :edit]
 
   # static_pages
   root 'static_pages#home'     
