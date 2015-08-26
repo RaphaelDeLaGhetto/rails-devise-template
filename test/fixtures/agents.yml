@@ -1,11 +1,62 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+daniel:
+  name: Daniel Bidulock
+  email: daniel@example.com
+  encrypted_password: <%= Agent.new(:password => 'password').encrypted_password %>
+  admin: true
+  confirmation_token: SomeToken001
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+#  activated: true
+#  activated_at: <%= Time.zone.now %>
+
+archer:
+  name: Sterling Archer
+  email: duchess@example.gov
+  encrypted_password: <%= Agent.new(:password => 'password').encrypted_password %>
+  confirmation_token: SomeToken002
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+
+
+#  activated: true
+#  activated_at: <%= Time.zone.now %>
+
+lana:
+  name: Lana Kane
+  email: hands@example.gov
+  encrypted_password: <%= Agent.new(:password => 'password').encrypted_password %>
+  confirmation_token: SomeToken003
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+
+
+#  activated: true
+#  activated_at: <%= Time.zone.now %>
+
+mallory:
+  name: Mallory Archer
+  email: boss@example.gov
+  encrypted_password: <%= Agent.new(:password => 'password').encrypted_password %>
+  confirmation_token: SomeToken004
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+
+
+#  activated: true
+#  activated_at: <%= Time.zone.now %>
+
+
+<% 30.times do |n| %>
+agent_<%= n %>:
+  name:  <%= "Agent #{n}" %>
+  email: <%= "agent-#{n}@example.com" %>
+  encrypted_password: <%= Agent.new(:password => 'password').encrypted_password %>
+  confirmation_token: <%= "SomeToken#{n}" %>
+  confirmed_at: <%= Time.zone.now %>
+  confirmation_sent_at: <%= Time.zone.now %>
+
+
+#  activated: true
+#  activated_at: <%= Time.zone.now %>
+<% end %>
