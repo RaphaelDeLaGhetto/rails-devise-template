@@ -11,12 +11,12 @@ module SessionsHelper
 #    cookies.permanent.signed[:agent_id] = agent.id
 #    cookies.permanent[:remember_token] = agent.remember_token
 #  end
-#
-#  # Returns true if the given agent is the current agent.
-#  def current_agent?(agent)
-#    agent == current_agent
-#  end
-#
+
+  # Returns true if the given agent is the current agent.
+  def current_agent?(agent)
+    agent == current_agent
+  end
+
 #  # Returns the current logged-in agent (if any).
 #  def current_agent
 #    if (agent_id = session[:agent_id])
@@ -34,18 +34,17 @@ module SessionsHelper
 #  def logged_in?
 #    !current_agent.nil?
 #  end
-#
-#  # Confirms the correct agent.
-#  def correct_agent(agent)
-#    if !admin_logged_in?
-#      redirect_to(root_url) unless current_agent?(agent)
-#    end
-#  end
+
+  # Confirms the correct agent.
+  def correct_agent(agent)
+    if !admin_logged_in?
+      redirect_to(root_url) unless current_agent?(agent)
+    end
+  end
 
   # Returns true if the agent is logged in as an admin, false otherwise.
   def admin_logged_in?
-    puts current_agent.inspect 
-#    !Agent.current_agent.nil? && Agent.current_agent.admin?
+    !current_agent.nil? && current_agent.admin
   end
 
 #  # Forgets a persistent session.
@@ -73,11 +72,11 @@ module SessionsHelper
 #    session[:forwarding_url] = request.url if request.get?
 #  end
 #
-#  # Confirms an admin agent.
-#  def admin_agent
-#    redirect_to(root_url) unless current_agent && current_agent.admin?
-#  end
-#
+  # Confirms an admin agent.
+  def admin_agent
+    redirect_to(root_url) unless current_agent && current_agent.admin?
+  end
+
 #  # Confirms a logged-in agent.
 #  def logged_in_agent
 #    unless logged_in?
