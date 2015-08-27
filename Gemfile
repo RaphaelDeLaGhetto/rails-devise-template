@@ -36,9 +36,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass'
 gem 'will_paginate'
 
-# Authentication
+# Authentication and permissions
 gem 'devise'
 gem 'omniauth'
+gem 'cancan'
 
 # ENV configuration
 gem 'figaro'
