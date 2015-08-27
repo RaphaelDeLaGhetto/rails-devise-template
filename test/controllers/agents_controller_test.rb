@@ -102,7 +102,7 @@ class AgentsControllerTest < ActionController::TestCase
   test "should redirect update when logged in as wrong agent" do
     sign_in(@agent)
     patch :update, id: @admin, agent: { name: @admin.name, email: @admin.email }
-    assert flash.empty?
+    assert_equal 'You are not authorized to access this page.', flash[:error]
     assert_redirected_to root_url
   end
 
