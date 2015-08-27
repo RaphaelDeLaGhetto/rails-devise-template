@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  include SessionsHelper
+
   # For Devise
   # 2015-8-26
   # RSB: http://stackoverflow.com/questions/28804532/undefined-local-variable-or-method-current-user-using-devise-rails-3-2
