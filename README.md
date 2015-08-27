@@ -15,6 +15,7 @@ git clone https://github.com/RaphaelDeLaGhetto/rails-devise-template.git
 ```
 cd rails-devise-template
 bundle install
+npm install
 ```
 
 ## Configure
@@ -44,10 +45,34 @@ default_from: 'noreply@example.com'
 #provider_database_password: 'secretp@ssword'
 ```
 
-
 ## Database
 
 ```
 rake db:create
 rake db:migrate
 ```
+
+# Tests
+
+## Rails
+
+```
+rake
+```
+
+## React
+
+```
+npm test
+```
+
+# Run server
+
+```
+rails s
+```
+
+# License
+
+MIT
+
