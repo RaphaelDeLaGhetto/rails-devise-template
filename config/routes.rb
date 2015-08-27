@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   devise_for :agents
-  resources :agents, :only => [:index, :show, :edit]
+  resources :agents, :except => [:create, :new]
 
   # static_pages
-  root 'static_pages#home'     
+  root to: 'static_pages#home'     
       
   get 'help' => 'static_pages#help'
   get 'about' => 'static_pages#about' 
