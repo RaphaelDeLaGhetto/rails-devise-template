@@ -34,6 +34,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Bootstrap
 gem 'bootstrap-sass'
+gem 'will_paginate'
 
 # Authentication
 gem 'devise'
