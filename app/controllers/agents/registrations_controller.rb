@@ -8,9 +8,13 @@ class Agents::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    if !admin_logged_in? && params[:agent][:admin]
+      redirect_to root_url 
+    else
+      super
+    end
+  end
 
   # GET /resource/edit
   # def edit

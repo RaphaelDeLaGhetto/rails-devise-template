@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   #
-  # cancan
+  # cancancan
   #
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = exception.message
@@ -17,6 +17,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Alias cancan's `current_user` method 
+  # Alias cancancan's `current_user` method 
   alias_method :current_user, :current_agent
 end
