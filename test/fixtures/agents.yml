@@ -7,9 +7,6 @@ daniel:
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
 
-#  activated: true
-#  activated_at: <%= Time.zone.now %>
-
 archer:
   name: Sterling Archer
   email: duchess@example.gov
@@ -17,10 +14,6 @@ archer:
   confirmation_token: SomeToken002
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-
-
-#  activated: true
-#  activated_at: <%= Time.zone.now %>
 
 lana:
   name: Lana Kane
@@ -30,10 +23,6 @@ lana:
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
 
-
-#  activated: true
-#  activated_at: <%= Time.zone.now %>
-
 mallory:
   name: Mallory Archer
   email: boss@example.gov
@@ -41,11 +30,6 @@ mallory:
   confirmation_token: SomeToken004
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-
-
-#  activated: true
-#  activated_at: <%= Time.zone.now %>
-
 
 <% 30.times do |n| %>
 agent_<%= n %>:
@@ -55,8 +39,4 @@ agent_<%= n %>:
   confirmation_token: <%= "SomeToken#{n}" %>
   confirmed_at: <%= Time.zone.now %>
   confirmation_sent_at: <%= Time.zone.now %>
-
-
-#  activated: true
-#  activated_at: <%= Time.zone.now %>
 <% end %>
