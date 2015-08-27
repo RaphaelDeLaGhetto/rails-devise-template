@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :agents
-  resources :agents, :except => [:create, :new]
+#  resources :agents, :except => [:create, :new]
+  devise_scope :agent do
+    get '/login' => 'devise/sessions#new'
+    get '/logout' => 'devise/sessions#destroy'
+  end
+  resources :agents, :controller => "agents"
 
   # static_pages
   root to: 'static_pages#home'     

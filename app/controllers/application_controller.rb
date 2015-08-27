@@ -5,12 +5,18 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
 
-  # For Devise
-  # 2015-8-26
-  # RSB: http://stackoverflow.com/questions/28804532/undefined-local-variable-or-method-current-user-using-devise-rails-3-2
-#  before_filter :set_current_agent
-#
-#  def set_current_agent
-#    Agent.current_agent = current_agent
-#  end
+  #
+  # cancan
+  #
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = exception.message
+    if agent_signed_in?
+      redirect_to root_url
+    else
+      redirect_to login_url
+    end
+  end
+
+  # Alias cancan's `current_user` method 
+  alias_method :current_user, :current_agent
 end

@@ -23,7 +23,7 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
 
   test "invalid non-admin signup" do
     post agent_session_path, email: @agent.email, password: 'password'
-    get new_agent_registration_path
+    get new_agent_path
     assert_select "#agent_admin", count: 0
     assert_no_difference 'Agent.count' do
       post agents_path, agent: { name:  "Example Agent",
@@ -32,13 +32,13 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
                                  password_confirmation: "password",
                                  admin: true }
     end
-    assert_redirected_to new_agent_path
-    assert_equal 'You cannot create an admin agent', flash[:danger]
+    assert_redirected_to root_url
+    assert_equal 'You are not authorized to access this page.', flash[:error]
   end
 
 
   test "valid signup information with account activation" do
-    log_in_as @admin
+    post agent_session_path, email: @admin.email, password: 'password'
     get new_agent_path
     assert_select "#agent_admin", count: 1
     assert_difference 'Agent.count', 1 do
@@ -56,7 +56,7 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
     log_out
 
     # Try to log in before activation.
-    log_in_as(agent)
+    post agent_session_path, email: agent.email, password: 'password'
     assert_not is_logged_in?
     # Invalid activation token
     get edit_account_activation_path("invalid token")
@@ -73,7 +73,7 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
   end
 
   test "valid admin signup information with account activation" do
-    log_in_as @admin
+    post agent_session_path, email: @admin.email, password: 'password'
     get new_agent_path
     assert_select "#agent_admin", count: 1
     assert_difference 'Agent.count', 1 do

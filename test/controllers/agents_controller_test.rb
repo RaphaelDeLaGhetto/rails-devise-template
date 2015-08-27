@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class AgentsControllerTest < ActionController::TestCase
+  should use_before_action :set_agent
 
   def setup
     @admin = agents(:daniel)
@@ -12,7 +13,7 @@ class AgentsControllerTest < ActionController::TestCase
   #
   test "should redirect index when not logged in" do
     get :index
-    assert_redirected_to new_agent_session_url
+    assert_redirected_to login_url
   end
 
   #
@@ -20,7 +21,7 @@ class AgentsControllerTest < ActionController::TestCase
   #
   test "should redirect show when not logged in" do
     get :show, id: @agent
-    assert_redirected_to new_agent_session_url
+    assert_redirected_to login_url
   end
 
   test "should show when logged in" do
@@ -73,13 +74,13 @@ class AgentsControllerTest < ActionController::TestCase
   test "should redirect edit when not logged in" do
     get :edit, id: @admin
     assert_not flash.empty?
-    assert_redirected_to new_agent_session_url
+    assert_redirected_to login_url
   end
 
   test "should redirect edit when logged in as wrong agent" do
     sign_in(@agent)
     get :edit, id: @admin
-    assert flash.empty?
+    assert_equal 'You are not authorized to access this page.', flash[:error]
     assert_redirected_to root_url
   end
 
@@ -95,7 +96,7 @@ class AgentsControllerTest < ActionController::TestCase
   test "should redirect update when not logged in" do
     patch :update, id: @admin, agent: { name: @admin.name, email: @admin.email }
     assert_not flash.empty?
-    assert_redirected_to new_agent_session_url
+    assert_redirected_to login_url
   end
 
   test "should redirect update when logged in as wrong agent" do
@@ -124,7 +125,7 @@ class AgentsControllerTest < ActionController::TestCase
     patch :update, id: @agent, agent: { password: 'somejunk',
                                         password_confirmation: 'somejunk',
                                         admin: true }
-    assert_not @agent.reload.admin?
+    assert_not @agent.reload.admin
   end
 
   test "should allow an admin to edit the admin attribute via the web" do
@@ -144,7 +145,7 @@ class AgentsControllerTest < ActionController::TestCase
     assert_no_difference 'Agent.count' do
       delete :destroy, id: @admin
     end
-    assert_redirected_to new_agent_session_url
+    assert_redirected_to login_url
   end
 
   test "should redirect destroy when logged in as a non-admin" do
