@@ -39,7 +39,7 @@ gem 'will_paginate'
 # Authentication and permissions
 gem 'devise'
 gem 'omniauth'
-gem 'cancan'
+gem 'cancancan'
 
 # ENV configuration
 gem 'figaro'
