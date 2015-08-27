@@ -52,7 +52,7 @@ class AgentTest < ActiveSupport::TestCase
   end
 
   test "password should have a minimum length" do
-    @agent.password = @agent.password_confirmation = "a" * 5
+    @agent.password = @agent.password_confirmation = "a" * 7
     assert_not @agent.valid?
   end
 end
