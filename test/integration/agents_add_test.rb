@@ -9,22 +9,35 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
   end
 
   test "invalid signup information" do
-    post agent_session_path, email: @admin.email, password: 'password'
-    get new_agent_registration_path
-    assert_select "#agent_admin", count: 1
-    assert_no_difference 'Agent.count' do
-      post agents_path, agent: { name:  "",
-                                 email: "agent@invalid",
-                                 password: "foo",
-                                 password_confirmation: "bar" }
-    end
+    # Sign in
+    post_via_redirect agent_session_path, 'agent[email]': @admin.email, 'agent[password]': 'password'
+    assert_template 'static_pages/home'
+
+    # Go to create new agent page
+    get new_agent_path
     assert_template 'agents/new'
+    assert_select "#agent_admin", count: 1
+
+    # Sign up agent with empty name field 
+    assert_no_difference 'Agent.count' do
+      post_via_redirect agents_path, agent: { name:  "",
+                                              email: "agent@invalid",
+                                              password: "foo",
+                                              password_confirmation: "bar" }
+    end
+    assert_template 'agents/registrations/new'
   end
 
   test "invalid non-admin signup" do
-    post agent_session_path, email: @agent.email, password: 'password'
+    # Sign in
+    post_via_redirect agent_session_path, 'agent[email]': @agent.email, 'agent[password]': 'password'
+    assert_template 'static_pages/home'
+
+    # Go to create new agent page
     get new_agent_path
     assert_select "#agent_admin", count: 0
+
+    # Non-admin agents can't sign up new agents
     assert_no_difference 'Agent.count' do
       post agents_path, agent: { name:  "Example Agent",
                                  email: "agent@example.com",
@@ -38,9 +51,15 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
 
 
   test "valid signup information with account activation" do
-    post agent_session_path, email: @admin.email, password: 'password'
+    # Sign in
+    post_via_redirect agent_session_path, 'agent[email]': @admin.email, 'agent[password]': 'password'
+    assert_template 'static_pages/home'
+
+    # Go to create new agent page
     get new_agent_path
     assert_select "#agent_admin", count: 1
+
+    # Good data from an admin
     assert_difference 'Agent.count', 1 do
       post agents_path, agent: { name:  "Example Agent",
                                  email: "agent@example.com",
@@ -50,32 +69,38 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     agent = assigns(:agent)
-    assert_not agent.activated?
+    assert_not agent.confirmed?
 
     # admin was signed in
-    log_out
+    get logout_path
 
     # Try to log in before activation.
-    post agent_session_path, email: agent.email, password: 'password'
-    assert_not is_logged_in?
+    post agent_session_path, 'agent[email]': agent.email, 'agent[password]': 'password'
+    assert_equal 'You have to confirm your email address before continuing.', flash[:alert]
+    assert_redirected_to agent_session_url
+
     # Invalid activation token
-    get edit_account_activation_path("invalid token")
-    assert_not is_logged_in?
-    # Valid token, wrong email
-    get edit_account_activation_path(agent.activation_token, email: 'wrong')
-    assert_not is_logged_in?
+    get agent_confirmation_path, :confirmation_token => "invalid token"
+    assert_not agent.reload.confirmed?
+    assert_template 'agents/confirmations/new'
+
     # Valid activation token
-    get edit_account_activation_path(agent.activation_token, email: agent.email)
-    assert agent.reload.activated?
+    get agent_confirmation_path, :confirmation_token => agent.confirmation_token
+    assert agent.reload.confirmed?
     follow_redirect!
-    assert_template 'agents/show'
-    assert is_logged_in?
+    assert_template 'agents/sessions/new'
   end
 
   test "valid admin signup information with account activation" do
-    post agent_session_path, email: @admin.email, password: 'password'
+    # Sign in
+    post_via_redirect agent_session_path, 'agent[email]': @admin.email, 'agent[password]': 'password'
+    assert_template 'static_pages/home'
+
+    # Go to create new agent page
     get new_agent_path
     assert_select "#agent_admin", count: 1
+
+    # Good data from an admin
     assert_difference 'Agent.count', 1 do
       post agents_path, agent: { name:  "Example Agent",
                                  email: "agent@example.com",
@@ -85,25 +110,26 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     agent = assigns(:agent)
-    assert_not agent.activated?
+    assert_not agent.confirmed?
 
     # admin was signed in
-    log_out
+    get logout_path
 
     # Try to log in before activation.
-    log_in_as(agent)
-    assert_not is_logged_in?
+    post agent_session_path, 'agent[email]': agent.email, 'agent[password]': 'password'
+    assert_equal 'You have to confirm your email address before continuing.', flash[:alert]
+    assert_redirected_to agent_session_url
+
     # Invalid activation token
-    get edit_account_activation_path("invalid token")
-    assert_not is_logged_in?
-    # Valid token, wrong email
-    get edit_account_activation_path(agent.activation_token, email: 'wrong')
-    assert_not is_logged_in?
+    get agent_confirmation_path, :confirmation_token => "invalid token"
+    assert_not agent.reload.confirmed?
+    assert_template 'agents/confirmations/new'
+
+
     # Valid activation token
-    get edit_account_activation_path(agent.activation_token, email: agent.email)
-    assert agent.reload.activated?
+    get agent_confirmation_path, :confirmation_token => agent.confirmation_token
+    assert agent.reload.confirmed?
     follow_redirect!
-    assert_template 'agents/show'
-    assert is_logged_in?
+    assert_template 'agents/sessions/new'
   end
 end
