@@ -33,40 +33,26 @@ class AgentsControllerTest < ActionController::TestCase
   #
   # new
   #
-#  test "should get new" do
-#    get :new
-#    assert_response :success
-#    assert_select "title", "Sign up | #{ENV['app_title']}"
-#  end
+  test "should redirect get new if not signed in as admin" do
+    get :new
+    assert_redirected_to login_path
+    assert_equal 'You are not authorized to access this page.', flash[:error]
+  end
 
-  #
-  # create
-  #
-#  test "should not allow a non-admin to create an admin agent" do
-#    sign_in(@agent)
-#    assert_no_difference 'Agent.count' do
-#      post :create, agent: { name: 'Bojack Horseman',
-#                             email: 'bojack@netflix.com',
-#                             password: 'somejunk',
-#                             password_confirmation: 'somejunk',
-#                             admin: true }
-#    end
-#    assert_redirected_to new_agent_path
-#    assert_equal 'You cannot create an admin agent', flash[:danger]
-#  end
-#
-#  test "should allow an admin to create an admin agent" do
-#    sign_in(@admin)
-#    assert_difference 'Agent.count', 1 do
-#      post :create, agent: { name: 'Bojack Horseman',
-#                             email: 'bojack@netflix.com',
-#                             password: 'somejunk',
-#                             password_confirmation: 'somejunk',
-#                             admin: true }
-#    end
-#    assert_redirected_to root_url
-#    assert_equal 'An activation email has been sent to the new agent.', flash[:info]
-#  end
+  test "should redirect get new if signed in as non-admin" do
+    sign_in @agent
+    get :new
+    assert_redirected_to root_path
+    assert_equal 'You are not authorized to access this page.', flash[:error]
+  end
+
+  test "should get new if signed in as admin" do
+    sign_in @admin
+    get :new
+    assert_response :success
+    assert_template 'agents/new'
+    assert_select "title", "Create agent | #{ENV['app_title']}"
+  end
 
   #
   # edit
@@ -136,7 +122,6 @@ class AgentsControllerTest < ActionController::TestCase
                                         admin: true }
     assert @agent.reload.admin?
   end
-
 
   #
   # destroy
