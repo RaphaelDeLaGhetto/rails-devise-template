@@ -19,39 +19,6 @@ class AgentsController < ApplicationController
   end
 
   #
-  # create
-  #
-#  def create
-#    @agent = Agent.new(params[:agent])
-#    if @agent.save
-#      flash[:notice] = "Successfully created Agent." 
-#      redirect_to root_path
-#    else
-#      render :action => 'new'
-#    end
-#  end
-
-  def create
-    message = "Check your email to activate your account"
-    if admin_logged_in?
-      message = "An activation email has been sent to the new agent"
-    elsif agent_params[:admin]
-      flash[:danger] = 'You cannot create an admin agent'
-      redirect_to new_agent_path
-      return
-    end
-
-    @agent = Agent.new(agent_params)
-    if @agent.save
-      @agent.send_activation_email
-      flash[:info] = message
-      redirect_to root_url
-    else
-      render 'new'
-    end
-  end
-
-  #
   # edit
   #
   def edit
