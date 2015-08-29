@@ -114,18 +114,6 @@ class AgentsController < ApplicationController
 #  end
 #
 #  #
-#  # update
-#  #
-#  def update
-#    if @agent.update_attributes(admin_logged_in? ? agent_params : agent_params.except(:admin))
-#      flash[:success] = "Profile updated"
-#      redirect_to @agent
-#    else
-#      render 'edit'
-#    end
-#  end
-#
-#  #
 #  # destroy
 #  #
 #  def destroy
