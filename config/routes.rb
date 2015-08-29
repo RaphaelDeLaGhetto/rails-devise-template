@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 #  devise_for :agents
-  devise_for :agents, :controllers => { :registrations => "agents/registrations" }
+  devise_for :agents, :controllers => { :registrations => 'agents/registrations' }
 
   devise_scope :agent do
     get '/login' => 'devise/sessions#new'
