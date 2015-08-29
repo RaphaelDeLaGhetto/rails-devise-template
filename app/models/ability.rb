@@ -3,12 +3,13 @@ class Ability
 
   def initialize(agent)
     # Define abilities for the passed in user here. For example:
-    
-    agent ||= Agent.new # guest agent (not logged in)
-    if agent.admin?
-      can :manage, :all
-    else
-      can [:edit, :show, :update], Agent, :id => agent.id
+    if !agent.nil?
+      if agent.admin?
+        can :manage, :all
+      else
+        can [:edit, :show, :update], Agent, :id => agent.id
+        can :apps, :static_page
+      end
     end
 
     #
