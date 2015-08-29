@@ -34,12 +34,14 @@ class AgentsController < ApplicationController
   # update
   #
   def update
-    params[:agent].delete(:password) if params[:agent][:password].blank?
-    params[:agent].delete(:password_confirmation) if params[:agent][:password].blank? and params[:agent][:password_confirmation].blank?
-    if @agent.update_attributes(admin_logged_in? ? agent_params : agent_params.except(:admin))
+    update_params = agent_params
+    update_params.delete(:password) if update_params[:password].blank?
+    update_params.delete(:password_confirmation) if update_params[:password].blank? and update_params[:password_confirmation].blank?
+    if @agent.update_attributes(admin_logged_in? ? update_params : update_params.except(:admin))
       flash[:notice] = "Successfully updated Agent."
       redirect_to @agent
     else
+      flash[:error] = @agent.errors
       render :action => 'edit'
     end
   end
