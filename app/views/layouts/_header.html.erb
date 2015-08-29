@@ -30,12 +30,12 @@
               <li><%= link_to "Settings", edit_agent_path(current_agent) %></li>
               <li class="divider"></li>
               <li>
-                <%= link_to "Log out", destroy_agent_session_path, method: "delete" %>
+                <%= link_to "Log out", logout_path, method: "get" %>
               </li>
             </ul>
           </li>
         <% else %>
-          <li><%= link_to "Log in", new_agent_session_path %></li>
+          <li><%= link_to "Log in", login_path %></li>
         <% end %>
       </ul>
     </div>
