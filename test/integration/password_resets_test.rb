@@ -25,6 +25,13 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     assert_redirected_to new_agent_session_url
 
+    # Ensure email is sent with correct details
+    mail = Devise.mailer.deliveries.last
+    assert_equal "Reset password instructions", mail.subject
+    assert_equal [@agent.email], mail.to
+    assert_equal [ENV["default_from"]], mail.from
+    assert_match @agent.email, mail.body.encoded
+
     # Get the email, and get the reset password token from it
     # 2015-8-29 http://iswwwup.com/t/80e86590311e/rails-4-devise-how-to-write-a-test-for-devise-reset-password-without-r.html
     message = ActionMailer::Base.deliveries[0].to_s

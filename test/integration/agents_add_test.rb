@@ -67,9 +67,19 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
                                  password_confirmation: "password",
                                  admin: false }
     end
-    assert_equal 1, ActionMailer::Base.deliveries.size
+
     agent = assigns(:agent)
     assert_not agent.confirmed?
+
+    assert_equal 1, ActionMailer::Base.deliveries.size
+
+    # Ensure email is sent with correct details
+    mail = Devise.mailer.deliveries.last
+    assert_equal "Confirmation instructions", mail.subject
+    assert_equal [agent.email], mail.to
+    assert_equal [ENV["default_from"]], mail.from
+    assert_match agent.email,              mail.body.encoded
+    assert_match agent.confirmation_token, mail.body.encoded
 
     # admin was signed in
     get logout_path
