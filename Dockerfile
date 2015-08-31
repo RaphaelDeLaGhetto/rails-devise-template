@@ -26,6 +26,7 @@ WORKDIR /home/app/rails-devise-template
 RUN chown -R app:app /home/app/rails-devise-template 
 RUN sudo -u app bundle install --deployment
 RUN sudo -u app RAILS_ENV=production rake assets:precompile
+RUN sudo -u app npm install
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
