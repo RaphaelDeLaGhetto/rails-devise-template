@@ -29,7 +29,7 @@ RUN sudo -u app bundle install --deployment
 # Install `node` modules without `sudo`
 RUN sudo groupadd nodegrp
 RUN sudo usermod -a -G nodegrp app
-RUN newgrp nodegrp
+RUN sudo newgrp nodegrp
 RUN sudo chgrp -R nodegrp /usr/lib/node_modules/
 RUN sudo chgrp nodegrp /usr/bin/node
 RUN sudo chgrp nodegrp /usr/bin/npm
