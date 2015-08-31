@@ -28,11 +28,11 @@ RUN sudo -u app bundle install --deployment
 
 # Install `node` modules without `sudo`
 RUN sudo groupadd nodegrp
-sudo usermod -a -G nodegrp app
-newgrp nodegrp
-sudo chgrp -R nodegrp /usr/lib/node_modules/
-sudo chgrp nodegrp /usr/bin/node
-sudo chgrp nodegrp /usr/bin/npm
+RUN sudo usermod -a -G nodegrp app
+RUN newgrp nodegrp
+RUN sudo chgrp -R nodegrp /usr/lib/node_modules/
+RUN sudo chgrp nodegrp /usr/bin/node
+RUN sudo chgrp nodegrp /usr/bin/npm
 
 RUN sudo -u app npm install
 RUN sudo -u app RAILS_ENV=production rake assets:precompile
