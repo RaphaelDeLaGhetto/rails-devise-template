@@ -25,7 +25,9 @@ ADD . /home/app/rails-devise-template
 WORKDIR /home/app/rails-devise-template
 RUN chown -R app:app /home/app/rails-devise-template 
 RUN sudo -u app bundle install --deployment
-RUN sudo -u app npm install
+# 2015-8-31
+# This needs to change. It shouldn't install with `sudo`
+RUN sudo npm install
 RUN sudo -u app RAILS_ENV=production rake assets:precompile
 
 # Clean up APT when done.
