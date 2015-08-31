@@ -27,14 +27,18 @@ RUN chown -R app:app /home/app/rails-devise-template
 RUN sudo -u app bundle install --deployment
 
 # Install `node` modules without `sudo`
-RUN sudo groupadd nodegrp
-RUN sudo usermod -a -G nodegrp app
-RUN sudo newgrp nodegrp
-RUN sudo chgrp -R nodegrp /usr/lib/node_modules/
-RUN sudo chgrp nodegrp /usr/bin/node
-RUN sudo chgrp nodegrp /usr/bin/npm
+#RUN sudo groupadd nodegrp
+#RUN sudo usermod -a -G nodegrp app
+#RUN sudo newgrp nodegrp
+#RUN sudo chgrp -R nodegrp /usr/lib/node_modules/
+#RUN sudo chgrp nodegrp /usr/bin/node
+#RUN sudo chgrp nodegrp /usr/bin/npm
 
-RUN sudo -u app npm install
+# 2015-8-31
+# All that above and I can't install without sudo?
+RUN sudo npm install
+# Why doesn't this work?
+#RUN sudo -u app npm install
 RUN sudo -u app RAILS_ENV=production rake assets:precompile
 
 # Clean up APT when done.
