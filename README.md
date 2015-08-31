@@ -1,16 +1,15 @@
 rails-devise-template
 =====================
 
+This is a ready-to-go Rails app with Devise and React.
 
-# Setup
-
-## Download
+# Download
 
 ```
 git clone https://github.com/RaphaelDeLaGhetto/rails-devise-template.git
 ```
 
-## Install dependencies
+# Install dependencies
 
 ```
 cd rails-devise-template
@@ -18,7 +17,7 @@ bundle install
 npm install
 ```
 
-## Configure
+# Configure
 
 `config/application.yml` is where [figaro](https://github.com/laserlemon/figaro)
 stores all your secret configuration details, so you need to create it manually:
@@ -45,7 +44,7 @@ default_from: 'noreply@example.com'
 #provider_database_password: 'secretp@ssword'
 ```
 
-## Database
+# Database
 
 ```
 rake db:create
