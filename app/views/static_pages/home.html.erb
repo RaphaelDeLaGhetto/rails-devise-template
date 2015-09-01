@@ -14,7 +14,9 @@
   <h3>Figaro configurable</h3>
   <h3>Mobile friendly</h3>
   <h3>Nginx/Phusion Passenger</h3>
-  <%= link_to "Sign up now!", new_agent_registration_path, class: "btn btn-lg btn-primary" %>
+  <% if current_agent.nil? %>
+    <%= link_to "Sign up now!", new_agent_registration_path, class: "btn btn-lg btn-primary" %>
+  <% end %>
 </div>
 
 <%= link_to image_tag("rails.png", alt: "Rails logo"), 'http://rubyonrails.org/' %>
