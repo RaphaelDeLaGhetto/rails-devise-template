@@ -120,6 +120,7 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     agent = assigns(:agent)
+    assert agent.admin?
     assert_not agent.confirmed?
 
     # admin was signed in
@@ -134,7 +135,6 @@ class AgentsAddTest < ActionDispatch::IntegrationTest
     get agent_confirmation_path, :confirmation_token => "invalid token"
     assert_not agent.reload.confirmed?
     assert_template 'agents/confirmations/new'
-
 
     # Valid activation token
     get agent_confirmation_path, :confirmation_token => agent.confirmation_token
